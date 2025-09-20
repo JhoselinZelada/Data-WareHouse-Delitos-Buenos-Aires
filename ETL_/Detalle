@@ -1,0 +1,283 @@
+# Proceso ETL: Extracción, Transformación y Carga
+
+#Extracción
+
+Los datos originales provienen de 7 archivos CSV con información de delitos en Buenos Aires.
+El primer paso fue la carga en la tabla STG_DELITOS, que funciona como un depósito temporal para los datos crudos.
+Luego se creó una segunda tabla, STG_2_DELITOS, a la cual se migraron todos los registros desde STG_DELITOS.
+Esto permitió realizar transformaciones sobre una copia de los datos, manteniendo la información original intacta en STG_DELITOS ante cualquier eventualidad.
+
+ #Transformación :
+ En la tabla STG_2_DELITOS se realizaron los siguientes procesos:
+   Limpieza de registros nulos o inconsistentes.
+   Normalización de datos.
+   Creación de nuevas columnas derivadas de otras.
+   Eliminación de columnas innecesarias o irrelevantes para el análisis.
+   Ajustes de formato (tipos de datos) en los atributos requeridos.
+  
+   #Carga
+ Una vez transformados, los datos fueron cargados en el modelo en estrella definido al inicio del proyecto.
+      Estructura del modelo:
+      Dimensiones:
+            DIM_TIEMPO
+            DIM_TIPO
+            DIM_CARACTERISTICAS
+            DIM_UBICACION
+      
+      Tabla de hechos:
+            FACT_DELITOS
+      
+
+TODO EL PROCESO ETL SE REALIZO EN ORACLE SQL DEVELOPER: 
+
+-Creación de la tabla "stg_delitos" : 
+CREATE TABLE stg_delitos
+  id_mapa          NUMBER,
+  anio             NUMBER,
+  mes              VARCHAR2(20),
+  dia              VARCHAR2(20)
+  fecha            DATE,
+  franja           VARCHAR2(20),
+  tipo             VARCHAR2(100),
+  subtipo          VARCHAR2(100),
+  uso_arma         VARCHAR2(2),
+  uso_moto         VARCHAR2(2),
+  barrio           VARCHAR2(100),
+  comuna           VARCHAR2(20),
+  latitud          VARCHAR2(50),
+  longitud         VARCHAR2(50)
+  cantidad         NUMBER ); 
+
+
+
+--Creación de la tabla "stg_2_delitos" : 
+CREATE TABLE stg_2_delitos
+  id_mapa          NUMBER,
+  anio             NUMBER,
+  mes              VARCHAR2(20),
+  dia              VARCHAR2(20)
+  fecha            DATE,
+  franja           VARCHAR2(20),
+  tipo             VARCHAR2(100),
+  subtipo          VARCHAR2(100),
+  uso_arma         VARCHAR2(2),
+  uso_moto         VARCHAR2(2),
+  barrio           VARCHAR2(100),
+  comuna           VARCHAR2(20),
+  latitud          VARCHAR2(50),
+  longitud         VARCHAR2(50)
+  cantidad         NUMBER ); 
+
+
+--Generar copia de datos de "stg_delitos" a "stg_2_delitos" : 
+
+Insert into stg_2_delitos
+Select * from stg_delitos; 
+
+--Elimino la columna (Atributo) "CANTIDAD" porque contenia un valor numerico "1" en todos los registros, y es esperado ya la cantidad de delitos por id debe ser 1 : 
+
+Alter table stg_2_delitos
+drop column cantidad; 
+
+
+--Elimino los campos donde contengan valores nullos que fueron analizados previamenente: 
+Delete 
+from stg_2_delitos
+where franja is null or
+      barrio is null or
+      comuna is null or
+      latitud is null or
+      longiud is null ;
+
+--Proceso para el campo franja dado que son valores numericos pero fueron alamcenados como VARCHAR2 : 
+
+Alter Table stg_2_delitos
+add franja_2 number; 
+
+Update stg_2_delitos
+set franja_2 = to_number(franja) ; 
+
+Alter table stg_2_delitos
+drop column franja; 
+
+Alter table stg_2_delitos rename column franja_2 to franja; 
+
+--Proceos para el campo comuna: 
+
+Alter table stg_2_delitos
+add comuna_2 number; 
+
+Update stg_2_delitos 
+set columna_2 = to_number (comuna); 
+
+Alter table stg_2_delitos 
+drop  column comuna; 
+
+Alter table stg_2_delitos rename column comuna_2 to comuna; 
+
+
+-Proceso para el campo mes: 
+
+Alter table stg_2_Delitos 
+add mes_num number; 
+
+Update stg_2_delitos
+set mes_num= case upper (mes)
+   When 'ENERO' THEN 1
+   When 'FEBRERO' THEN 2
+   When 'MARZO' THEN 3
+   When 'ABRIL' THEN 4
+   When 'MAYO' THEN 5
+   When 'JUNIO' THEN 6
+   When 'JULIO' THEN 7
+   When 'AGOSTO' THEN 8
+   When 'SEPTIEMBRE' THEN 9
+   When 'OCTUBRE' THEN 10
+   When 'NOVIEMBRE' THEN 11
+   When 'DICIEMBRE' THEN 12
+END; 
+
+
+-Proceso para el campo dia: 
+
+Alter table stg_2_delitos
+add dia_num number; 
+
+Update stg_2_delitos
+set dia_num= case upper (dia)
+   When 'LUNES' THEN 1
+   When 'MARTES' THEN 2
+   When 'MIERCOLES' THEN 3
+   When 'JUEVES' THEN 4
+   When 'VIERNES' THEN 5
+   When 'SABADO' THEN 6
+   When 'DOMINGO' THEN 7
+END; 
+
+ --Proceso para uso_arma: 
+
+Alter table stg_2_delitos
+add uso_arma_2 number;
+
+Update stg_2_delitos
+set uso_arma_2= case upper(uso_arma)
+  When 'SI' THEN 1
+  When 'NO' THEN 0
+END; 
+
+Alter table stg_2_delitos
+drop column uso_arma; 
+
+Alter table stg_2_delitos rename column uso_arma_2 to uso_arma; 
+
+--Proceso para uso_moto: 
+
+Alter table stg_2_delitos
+add uso_moto_2 number;
+
+Update stg_2_delitos
+set uso_moto_2= case upper(uso_moto)
+  When 'SI' THEN 1
+  When 'NO' THEN 0
+END; 
+
+Alter table stg_2_delitos
+drop column uso_moto; 
+
+Alter table stg_2_delitos rename column uso_moto_2 to uso_moto; 
+
+
+--Proceso para latitud: 
+
+Alter table stg_2_delitos
+add filtro varchar2(8); 
+
+Update stg_2_delitos
+set filtro= substr(latitud, 1 , 8) ; 
+
+Update stg_2_delitos
+set filtro =
+  CASE 
+    WHEN INSTR(filtro,'.')>0 THEN
+        substr(filtro, 1 instr(filtro, '.') +3) 
+    ELSE filtro
+  END;
+
+UPDATE stg_2_delitos
+Set filtro = replace ( replace(filtro, '-', ''), '.', '')
+Where filtro is not null; 
+
+Alter table stg_2_delitos
+Add latitud_2 number (8,3);
+
+Update stg_2_delitos 
+set latitud_2=to_number(filtro)
+where filtro is not null;
+
+Alter table stg_2_delitos
+drop column latitud; 
+
+Alter table stg_2_delitos
+Rename column latitud_2 to latitud;
+
+Update stg_2_delitos
+set latitud = latitud -1; 
+
+Update stg_2_delitos
+set latitud= latitud/1000;
+
+
+--Proceso para el atributo Longitud: 
+
+Alter table stg_2_delitos
+Add filtro_2 varchar(8);
+
+Update stg_2_delitos 
+set filtro_2 = substr(lonigtud,1,8) 
+
+Update stg_2_Delitos 
+set filtro_2= 
+  CASE 
+      WHEN INSTR(filtro_2, '.') >0 THEN
+        SUBSTR(filtro_2, 1, INSTR(filtro_2, '.') + 3
+      ELSE filtro_2
+  END; 
+
+Update stg_2_delitos
+set filtro_2=replace(replace(filtro_2, '-',''),'.','')
+Where filtro_2 is not null; 
+
+Alter table stg_2_Delitos
+Add longitud_2 Number(8,3);
+
+Update stg_2_delitos
+set longiutd_2 = to_number(Filtro_2
+where filtro_2 is not null; 
+
+Update stg_2_Delitos 
+set longitud_2= longitud_2* (-1); 
+
+Update stg_2_delitos 
+set longitud_2=longitud_2/1000;
+
+Alter table stg_2_delitos
+Drop column longitud;
+
+Alter table stg_2_delitos Rename column longitud_2 to longitud; 
+
+--Proceso para el atributo Barrio: 
+
+Update stg_2_delitos 
+set barrio= 'NUÑEZ'
+WHERE UPPER(barrio) like 'NUA´EZ' ;
+
+
+
+--CREACION DE LAS DIMENSIONES Y TABLA DE HECHOS: 
+
+
+
+--DIMCARACTERISTICAS:
+
+CREATE TABLE DIMCARACTERISTICAS (
+  id_dim_caracteristicas number primary key, 
