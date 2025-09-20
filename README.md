@@ -51,6 +51,27 @@ Finalmente, realice la conexión con Power bi para generar los siguientes Dashbo
 ![Dashboard_4](Power_bi_2/dashboards/DASHBOARD_4.png)
 ![Dashboard_5](Power_bi_2/dashboards/DASHBOARD_5.png)
 
+## ¿En base a los graficos obtenidos, que interpretamos? 
+
+Los dashboards generados en Power BI nos permiten **interpretar rápidamente los datos de delitos en Buenos Aires**, destacando aspectos como:
+
+- Los **barrios con mayor cantidad de delitos**.  
+- Las **tendencias de delitos según el año**, por ejemplo, durante la pandemia se registró la menor cantidad de delitos.  
+- La **variación de delitos por estación**; por ejemplo, se observa que en invierno (meses de abril, mayo, junio y julio) los delitos disminuyen comparando con las otras estaciones del año.  
+- Los **tipos de delitos más frecuentes** y su comparación con otros tipos, visualizados claramente en gráficos de barras.  
+- Los **top 5 barrios** con más delitos registrados.  
+- El **mapa de calor** permite identificar las zonas con mayor concentración de delitos; las áreas más “punteadas” o con más intensidad representan los barrios con más delitos.
+
+  ### ¿Qué hacer con estos datos?
+
+La información obtenida de los dashboards nos permite:
+
+- Tomar decisiones basadas en datos para la **planificación de políticas de seguridad**, identificando qué zonas priorizar en cuanto a personal, medidas de prevención y monitoreo.  
+- Evaluar estrategias para reducir la tendencia de delitos y entender cómo factores externos, como la pandemia, pueden afectar la cantidad de delitos. También permite analizar fechas clave para detectar **patrones o eventos que influyan en los delitos** y en base a eso, poder anticiparnos a futuras situacioes.  
+- El sector de seguridad puede diseñar estrategias específicas para los **top 5 barrios con más delitos**, identificando franjas horarias críticas, días de la semana, ubicaciones y meses con mayor incidencia, y así tomar acciones preventivas más efectivas, contribuyendo a **mejorar la seguridad en la ciudad de Buenos Aires** y generando un impacto positivo en la vida de las personas.
+
+
+
 
 
 
