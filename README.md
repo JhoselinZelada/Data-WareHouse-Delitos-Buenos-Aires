@@ -40,11 +40,16 @@ Para la creación del modelo multidimensional se deteminaron las dimensiones:
 Tabla de hechos:
   -FactDelitos
 
+## POWER BI: 
 
 Finalmente, realice la conexión con Power bi para generar los siguientes Dashboards:
 
 
 ![Dashboard_1](Power_bi_2/dashboards/DASHBOARD_1.png)
+![Dashboard_2](Power_bi_2/dashboards/DASHBOARD_2.png)
+![Dashboard_3](Power_bi_2/dashboards/DASHBOARD_3.png)
+![Dashboard_4](Power_bi_2/dashboards/DASHBOARD_4.png)
+![Dashboard_5](Power_bi_2/dashboards/DASHBOARD_5.png)
 
 
 
@@ -52,7 +57,3 @@ Finalmente, realice la conexión con Power bi para generar los siguientes Dashbo
 
 
 
-
-
--factDelitos con sus respectivas med
-Ádemas, la factDelitos contiene una dimensión degenerada, llamada franja_horaria.
