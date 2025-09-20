@@ -4,7 +4,7 @@ Proyecto de Data Warehouse sobre delitos en Buenos Aires.
 
 
 Modelo multidimensional : 
-Link: https://drive.google.com/drive/folders/19-tNfXBYhfnVHK1NRHPVyJeM5UfjabLg 
+Link:![Modelo multidimensional](MODELO_MULTIDIMENSIONAL/MODELO_ESTRELLA_V2.png)
 Para la creación del modelo multidimensional se deteminaron las dimensiones: 
 -DimCaracteristica 
 -DimTiempo
