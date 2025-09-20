@@ -44,7 +44,7 @@ Tabla de hechos:
 Finalmente, realice la conexión con Power bi para generar los siguientes Dashboards:
 
 
-![Modelo multidimensional](POWER_BI_V2/dashboards/DASHBOARD_1.png)
+![Dashboard_1](Power_bi_2/dashboards/DASHBOARD_1.png)
 
 
 
