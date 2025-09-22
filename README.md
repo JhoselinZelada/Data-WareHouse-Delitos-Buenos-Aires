@@ -4,7 +4,7 @@ Proyecto de creación de un **Data Warehouse** sobre delitos en la ciudad de Bue
 
 
 ## Objetivo
-El objetivo de este proyecto es poder consolidar y organizar los datos de delitos en Buenos Aires para **analizarlos de manera efectiva**, detectar patrones y tendencias, generar **información útil y visualizaciones claras**, y así apoyar la **toma de decisiones basada en datos**..
+El objetivo de este proyecto es poder consolidar y organizar los datos de delitos en Buenos Aires para **analizarlos de manera efectiva**, detectar patrones y tendencias, generar **información útil y visualizaciones claras**, y así apoyar la **toma de decisiones basada en datos**.
 
 ## Herramientas
 Para el desarrollo de este proyecto se utilizaron las siguientes herramientas:
